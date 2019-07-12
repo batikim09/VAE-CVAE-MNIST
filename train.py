@@ -79,7 +79,7 @@ def main(args):
                     epoch, args.epochs, iteration, len(data_loader)-1, loss.item()))
 
                 if args.conditional:
-                    c = torch.arange(0, 10).long().unsqueeze(1)
+                    c = torch.arange(0, 10).long().unsqueeze(1).to(device)
                     x = vae.inference(n=c.size(0), c=c)
                 else:
                     x = vae.inference(n=10)
@@ -92,7 +92,7 @@ def main(args):
                         plt.text(
                             0, 0, "c={:d}".format(c[p].item()), color='black',
                             backgroundcolor='white', fontsize=8)
-                    plt.imshow(x[p].view(28, 28).data.numpy())
+                    plt.imshow(x[p].view(28, 28).cpu().data.numpy())
                     plt.axis('off')
 
                 if not os.path.exists(os.path.join(args.fig_root, str(ts))):
